@@ -1,50 +1,67 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 
 export default function ChristmasRegistration() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    nickName: '',
-    phone: '',
-    age: '',
+    firstName: "",
+    lastName: "",
+    nickName: "",
+    phone: "",
+    age: "",
     familySize: 1,
-    dietary: '',
-    notes: ''
-  })
+    dietary: "",
+    notes: "",
+  });
+  const [tapCount, setTapCount] = useState(0);
+
+  const handleCornerTap = () => {
+    setTapCount((prev) => {
+      if (prev + 1 >= 7) {
+        window.location.href = "/admin/login";
+        return 0;
+      }
+      return prev + 1;
+    });
+
+    // Reset tap count after 3 seconds
+    setTimeout(() => {
+      setTapCount(0);
+    }, 3000);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
+      const response = await fetch("/api/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      })
-      
-      const data = await response.json()
-      
+      });
+
+      const data = await response.json();
+
       if (response.ok) {
-        console.log(data)
-        window.location.href = `/ticket/${data.id}`
+        console.log(data);
+        window.location.href = `/ticket/${data.id}`;
       } else {
-        throw new Error('ลงทะเบียนไม่สำเร็จ')
+        throw new Error("ลงทะเบียนไม่สำเร็จ");
       }
     } catch (error) {
-      alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง')
-      console.error('Error:', error)
+      alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง");
+      console.error("Error:", error);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-800 to-red-900 py-12">
+      <div className="absolute top-0 right-0 w-16 h-16 cursor-default" onClick={handleCornerTap} />
       <div className="container mx-auto px-4">
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl p-8">
           <h2 className="text-2xl font-bold mb-6 text-center">ลงทะเบียนงานเฉลิมฉลองคริสต์มาส</h2>
-          
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-1">ชื่อจริง</label>
@@ -52,7 +69,7 @@ export default function ChristmasRegistration() {
                 type="text"
                 className="w-full border rounded-lg p-2"
                 value={formData.firstName}
-                onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                 required
               />
             </div>
@@ -63,7 +80,7 @@ export default function ChristmasRegistration() {
                 type="text"
                 className="w-full border rounded-lg p-2"
                 value={formData.lastName}
-                onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 required
               />
             </div>
@@ -74,7 +91,7 @@ export default function ChristmasRegistration() {
                 type="text"
                 className="w-full border rounded-lg p-2"
                 value={formData.nickName}
-                onChange={(e) => setFormData({...formData, nickName: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, nickName: e.target.value })}
                 required
               />
             </div>
@@ -85,7 +102,7 @@ export default function ChristmasRegistration() {
                 type="tel"
                 className="w-full border rounded-lg p-2"
                 value={formData.phone}
-                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 required
               />
             </div>
@@ -97,7 +114,7 @@ export default function ChristmasRegistration() {
                 min="0"
                 className="w-full border rounded-lg p-2"
                 value={formData.age}
-                onChange={(e) => setFormData({...formData, age: Number(e.target.value)})}
+                onChange={(e) => setFormData({ ...formData, age: Number(e.target.value) })}
                 required
               />
             </div>
@@ -108,7 +125,7 @@ export default function ChristmasRegistration() {
                 type="text"
                 className="w-full border rounded-lg p-2"
                 value={formData.dietary}
-                onChange={(e) => setFormData({...formData, dietary: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, dietary: e.target.value })}
                 placeholder="แพ้อาหารหรือข้อจำกัดในการรับประทานอาหาร"
               />
             </div>
@@ -118,7 +135,7 @@ export default function ChristmasRegistration() {
               <textarea
                 className="w-full border rounded-lg p-2"
                 value={formData.notes}
-                onChange={(e) => setFormData({...formData, notes: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 rows={3}
                 placeholder="ข้อมูลเพิ่มเติมที่ต้องการแจ้งให้ทราบ"
               />
@@ -134,5 +151,5 @@ export default function ChristmasRegistration() {
         </div>
       </div>
     </div>
-  )
+  );
 }
