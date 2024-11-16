@@ -3,7 +3,7 @@
 import { useState } from "react";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function ChristmasRegistration() {
   const [formData, setFormData] = useState({
@@ -14,11 +14,12 @@ export default function ChristmasRegistration() {
     age: "",
     dietary: "",
     notes: "",
-    familySize: "1", 
+    familySize: "1",
     address: "",
   });
   const [tapCount, setTapCount] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCornerTap = () => {
     setTapCount((prev) => {
@@ -46,93 +47,93 @@ export default function ChristmasRegistration() {
   };
 
   // In handleSubmit function, update the formData structure:
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  
-  const submissionData = {
-    firstName: formData.firstName.trim(),
-    lastName: formData.lastName.trim(),
-    nickName: formData.nickName.trim(),
-    phone: formData.phone.trim(),
-    age: formData.age,
-    dietary: formData.dietary?.trim() || null,
-    notes: formData.notes?.trim() || null,
-    familySize: formData.familySize || "1",
-    address: formData.address?.trim() || null
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const response = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(submissionData),
-    });
+    const submissionData = {
+      firstName: formData.firstName.trim(),
+      lastName: formData.lastName.trim(),
+      nickName: formData.nickName.trim(),
+      phone: formData.phone.trim(),
+      age: formData.age,
+      dietary: formData.dietary?.trim() || null,
+      notes: formData.notes?.trim() || null,
+      familySize: formData.familySize || "1",
+      address: formData.address?.trim() || null,
+    };
 
-    const data = await response.json();
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(submissionData),
+      });
 
-    if (response.ok) {
-      triggerConfetti();
-      const queryParams = new URLSearchParams({
-        firstName: submissionData.firstName,
-        lastName: submissionData.lastName,
-        nickName: submissionData.nickName
-      }).toString();
-      
-      setTimeout(() => {
-        window.location.href = `/ticket/${data.id}?${queryParams}`;
-      }, 1000);
-    } else {
-      throw new Error(data.error || "ลงทะเบียนไม่สำเร็จ");
+      const data = await response.json();
+
+      if (response.ok) {
+        triggerConfetti();
+        const queryParams = new URLSearchParams({
+          firstName: submissionData.firstName,
+          lastName: submissionData.lastName,
+          nickName: submissionData.nickName,
+        }).toString();
+
+        setTimeout(() => {
+          window.location.href = `/ticket/${data.id}?${queryParams}`;
+        }, 1000);
+      } else {
+        throw new Error(data.error || "ลงทะเบียนไม่สำเร็จ");
+      }
+    } catch (error) {
+      alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง");
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง");
-    console.error("Error:", error);
-  }
-};
-
+  };
 
   const RequiredStar = () => <span className="text-red-500 animate-pulse ml-1">*</span>;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-800 to-red-900 py-12 relative overflow-hidden">
-  {/* Left Christmas Tree */}
-<motion.div
-  initial={{ scale: 0, opacity: 0, rotate: -15 }}
-  animate={{ scale: 1, opacity: 1, rotate: -15 }}
-  transition={{ 
-    duration: 0.7,
-    ease: "easeOut"
-  }}
-  className="absolute left-0 top-1/4 w-64 h-64"
->
-  <Image
-    src="/christmasTree.svg"
-    alt="Christmas Tree Left"
-    width={256}
-    height={256}
-    priority
-  />
-</motion.div>
+      {/* Left Christmas Tree */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0, rotate: -15 }}
+        animate={{ scale: 1, opacity: 1, rotate: -15 }}
+        transition={{
+          duration: 0.7,
+          ease: "easeOut",
+        }}
+        className="absolute left-0 top-1/4 w-64 h-64"
+      >
+        <Image
+          src="/christmasTree.svg"
+          alt="Christmas Tree Left"
+          width={256}
+          height={256}
+          priority
+        />
+      </motion.div>
 
-{/* Right Christmas Tree */}
-<motion.div
-  initial={{ scale: 0, opacity: 0, rotate: 15 }}
-  animate={{ scale: 1, opacity: 1, rotate: 15 }}
-  transition={{ 
-    duration: 0.7,
-    ease: "easeOut"
-  }}
-  className="absolute right-0 top-1/4 w-64 h-64"
->
-  <Image
-    src="/christmasTree.svg"
-    alt="Christmas Tree Right"
-    width={256}
-    height={256}
-    priority
-  />
-</motion.div>
-
+      {/* Right Christmas Tree */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0, rotate: 15 }}
+        animate={{ scale: 1, opacity: 1, rotate: 15 }}
+        transition={{
+          duration: 0.7,
+          ease: "easeOut",
+        }}
+        className="absolute right-0 top-1/4 w-64 h-64"
+      >
+        <Image
+          src="/christmasTree.svg"
+          alt="Christmas Tree Right"
+          width={256}
+          height={256}
+          priority
+        />
+      </motion.div>
 
       {/* Christmas Lights */}
       <div className="absolute top-0 left-0 right-0 flex justify-around">
@@ -157,7 +158,7 @@ const handleSubmit = async (e) => {
       >
         <div className="max-w-md mx-auto bg-white/95 backdrop-blur-lg rounded-lg shadow-2xl p-8 relative">
           <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-red-600 to-green-600 bg-clip-text text-transparent">
-            ลงทะเบียนงานเฉลิมฉลองคริสต์มาส 
+            ลงทะเบียนงานเฉลิมฉลองคริสต์มาส
           </h2>
           <p className="text-center italic p-2">วันที่ 24 ธันวาคม 2024 ณ คริสตจักรชลบุรี</p>
 
@@ -255,16 +256,28 @@ const handleSubmit = async (e) => {
 
             <motion.button
               type="submit"
-              className="w-full bg-gradient-to-r from-red-600 to-green-600 text-white font-bold py-4 rounded-lg shadow-xl relative overflow-hidden group"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              disabled={isLoading}
+              className={`w-full bg-gradient-to-r from-red-600 to-green-600 text-white font-bold py-4 rounded-lg shadow-xl relative overflow-hidden group ${
+                isLoading ? "opacity-75 cursor-not-allowed" : ""
+              }`}
+              whileHover={{ scale: isLoading ? 1 : 1.02 }}
+              whileTap={{ scale: isLoading ? 1 : 0.98 }}
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
-                <span className="animate-bounce">🎅</span>
-                ลงทะเบียนเข้าร่วมงานคริสต์มาส
-                <span className="animate-bounce">🎄</span>
+                {isLoading ? (
+                  <>
+                    <span className="animate-spin">🎄</span>
+                    กำลังลงทะเบียน...
+                  </>
+                ) : (
+                  <>
+                    <span className="animate-bounce">🎅</span>
+                    ลงทะเบียนเข้าร่วมงานคริสต์มาส
+                    <span className="animate-bounce">🎄</span>
+                  </>
+                )}
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </motion.button>
@@ -294,5 +307,3 @@ const handleSubmit = async (e) => {
     </div>
   );
 }
-
-
