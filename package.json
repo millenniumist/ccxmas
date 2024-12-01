@@ -33,6 +33,7 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "use-sound": "^4.0.3",
+    "uuid": "^11.0.3",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

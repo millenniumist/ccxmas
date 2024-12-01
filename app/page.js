@@ -4,6 +4,8 @@ import { useState } from "react";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { v4 as uuidv4 } from 'uuid';
+
 
 export default function ChristmasRegistration() {
   const [formData, setFormData] = useState({
@@ -20,6 +22,8 @@ export default function ChristmasRegistration() {
   const [tapCount, setTapCount] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [pdpaConsent, setPdpaConsent] = useState(false);
+
 
   const handleCornerTap = () => {
     setTapCount((prev) => {
@@ -45,12 +49,19 @@ export default function ChristmasRegistration() {
       disableForReducedMotion: true,
     });
   };
-
+  const generateShortId = () => {
+    return uuidv4().substring(0, 5);
+  };
   // In handleSubmit function, update the formData structure:
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
+    
+    if (isLoading || !pdpaConsent) return
+    
+    setIsLoading(true)
 
     const submissionData = {
+      tId: generateShortId(),
       firstName: formData.firstName.trim(),
       lastName: formData.lastName.trim(),
       nickName: formData.nickName.trim(),
@@ -60,43 +71,43 @@ export default function ChristmasRegistration() {
       notes: formData.notes?.trim() || null,
       familySize: formData.familySize || "1",
       address: formData.address?.trim() || null,
-    };
+    }
 
     try {
       const response = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submissionData),
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (response.ok) {
-        triggerConfetti();
+        triggerConfetti()
         const queryParams = new URLSearchParams({
           firstName: submissionData.firstName,
           lastName: submissionData.lastName,
           nickName: submissionData.nickName,
-        }).toString();
+        }).toString()
 
         setTimeout(() => {
-          window.location.href = `/ticket/${data.id}?${queryParams}`;
-        }, 1000);
+          window.location.href = `/ticket/${data.tId}?${queryParams}`
+        }, 1000)
       } else {
-        throw new Error(data.error || "ลงทะเบียนไม่สำเร็จ");
+        throw new Error(data.error || "ลงทะเบียนไม่สำเร็จ")
       }
     } catch (error) {
-      alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง");
-      console.error("Error:", error);
-    } finally {
-      setIsLoading(false);
+      alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง")
+      console.error("Error:", error)
+      setIsLoading(false)
     }
-  };
+}
+
 
   const RequiredStar = () => <span className="text-red-500 animate-pulse ml-1">*</span>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-800 to-red-900 py-12 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#071E48] to-black py-12 relative overflow-hidden">
       {/* Left Christmas Tree */}
       <motion.div
         initial={{ scale: 0, opacity: 0, rotate: -15 }}
@@ -156,7 +167,7 @@ export default function ChristmasRegistration() {
         animate={{ opacity: 1, y: 0 }}
         className="container mx-auto px-4"
       >
-        <div className="max-w-md mx-auto bg-white/95 backdrop-blur-lg rounded-lg shadow-2xl p-8 relative">
+        <div className="max-w-md mx-auto bg-neutral-200 backdrop-blur-lg rounded-lg shadow-2xl p-8 relative">
           <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-red-600 to-green-600 bg-clip-text text-transparent">
             ลงทะเบียนงานเฉลิมฉลองคริสต์มาส
           </h2>
@@ -253,11 +264,26 @@ export default function ChristmasRegistration() {
                 placeholder="ข้อมูลเพิ่มเติมที่ต้องการแจ้งให้ทราบ"
               />
             </div>
+            <div className="space-y-2">
+  <div className="flex items-start gap-2">
+    <input
+      type="checkbox"
+      id="pdpaConsent"
+      checked={pdpaConsent}
+      onChange={(e) => setPdpaConsent(e.target.checked)}
+      className="mt-1"
+      required
+    />
+    <label htmlFor="pdpaConsent" className="text-sm text-gray-700">
+      ข้าพเจ้ายินยอมให้จัดเก็บข้อมูลส่วนบุคคลตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 เพื่อใช้ในการลงทะเบียนและติดต่อสื่อสารเกี่ยวกับงานคริสต์มาสเท่านั้น <RequiredStar />
+    </label>
+  </div>
+</div>
 
             <motion.button
               type="submit"
               disabled={isLoading}
-              className={`w-full bg-gradient-to-r from-red-600 to-green-600 text-white font-bold py-4 rounded-lg shadow-xl relative overflow-hidden group ${
+              className={`w-full bg-gradient-to-r from-indigo-950 to-yellow-500 text-white font-bold py-4 rounded-lg shadow-xl relative overflow-hidden group ${
                 isLoading ? "opacity-75 cursor-not-allowed" : ""
               }`}
               whileHover={{ scale: isLoading ? 1 : 1.02 }}
@@ -273,35 +299,13 @@ export default function ChristmasRegistration() {
                   </>
                 ) : (
                   <>
-                    <span className="animate-bounce">🎅</span>
-                    ลงทะเบียนเข้าร่วมงานคริสต์มาส
-                    <span className="animate-bounce">🎄</span>
+                    ลงทะเบียนเข้าร่วมงานคริสต์มาส 
                   </>
                 )}
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </motion.button>
           </form>
 
-          {/* Decorative Elements */}
-          <div className="absolute -bottom-4 left-0 right-0 flex justify-around">
-            {["🎁", "⛄", "🔔", "🎅", "🦌"].map((emoji, i) => (
-              <motion.div
-                key={i}
-                animate={{
-                  y: [0, -10, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                }}
-                className="text-2xl"
-              >
-                {emoji}
-              </motion.div>
-            ))}
-          </div>
         </div>
       </motion.div>
     </div>

@@ -27,3 +27,11 @@ export async function PUT(request, { params }) {
     await prisma.$disconnect()
   }
 }
+
+export async function DELETE(request, { params }) {
+  const id = params.id
+  const deleted = await prisma.christmasRegistration.delete({
+    where: { id: parseInt(id) }
+  })
+  return NextResponse.json(deleted)
+}

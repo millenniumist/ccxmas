@@ -17,6 +17,7 @@ model Admin {
 
 model ChristmasRegistration {
   id         Int   @id @default(sequence())
+  tId        String 
   firstName  String
   lastName   String
   nickName   String

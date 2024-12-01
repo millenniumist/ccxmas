@@ -1,84 +1,101 @@
-'use client'
-import { useState, useEffect } from 'react'
+"use client";
+import { useState, useEffect } from "react";
 
 export default function AdminDashboard() {
-  const [registrations, setRegistrations] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const [editingId, setEditingId] = useState(null)
-  const [editForm, setEditForm] = useState({})
-  const [loading, setLoading] = useState(true)
+  const [registrations, setRegistrations] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchRegistrations()
-  }, [])
+    fetchRegistrations();
+  }, []);
 
   const fetchRegistrations = async () => {
     try {
-      const response = await fetch('/api/admin/registrations')
+      const response = await fetch("/api/admin/registrations");
       if (response.ok) {
-        const data = await response.json()
-        setRegistrations(data)
+        const data = await response.json();
+        setRegistrations(data);
       }
     } catch (error) {
-      console.error('Failed to fetch registrations:', error)
+      console.error("Failed to fetch registrations:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleEdit = (registration) => {
-    setEditingId(registration.id)
-    setEditForm(registration)
-  }
+    setEditingId(registration.id);
+    setEditForm(registration);
+  };
 
   const handleUpdate = async () => {
     try {
       const response = await fetch(`/api/admin/registrations/${editingId}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(editForm),
-      })
+      });
 
       if (response.ok) {
-        await fetchRegistrations()
-        setEditingId(null)
+        await fetchRegistrations();
+        setEditingId(null);
       }
     } catch (error) {
-      console.error('Failed to update registration:', error)
+      console.error("Failed to update registration:", error);
     }
-  }
+  };
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this registration?")) {
+      try {
+        const response = await fetch(`/api/admin/registrations/${id}`, {
+          method: "DELETE",
+        });
+
+        if (response.ok) {
+          await fetchRegistrations();
+          setEditingId(null);
+        }
+      } catch (error) {
+        console.error("Failed to delete registration:", error);
+      }
+    }
+  };
 
   const downloadExcel = async () => {
     try {
-      const response = await fetch('/api/admin/export')
+      const response = await fetch("/api/admin/export");
       if (response.ok) {
-        const blob = await response.blob()
-        const url = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = 'christmas_registrations.xlsx'
-        a.click()
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "christmas_registrations.xlsx";
+        a.click();
       }
     } catch (error) {
-      console.error('Failed to download Excel:', error)
+      console.error("Failed to download Excel:", error);
     }
-  }
+  };
 
-  const filteredRegistrations = registrations.filter(reg => 
-    reg.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    reg.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    reg.phone?.includes(searchTerm) ||
-    reg.nickName?.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredRegistrations = registrations.filter(
+    (reg) =>
+      reg.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reg.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reg.phone?.includes(searchTerm) ||
+      reg.nickName?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const totalRegistrations = registrations.length
-  const totalAttendees = registrations.filter(reg => reg.attendance).length
-  const totalFamilySize = registrations.reduce((sum, reg) => sum + (reg.familySize || 0), 0)
+  const totalRegistrations = registrations.length;
+  const totalAttendees = registrations.filter((reg) => reg.attendance).length;
+  const totalFamilySize = registrations.reduce((sum, reg) => sum + (reg.familySize || 0), 0);
 
   if (loading) {
-    return <div className="p-8 text-center">Loading...</div>
+    return <div className="p-8 text-center">Loading...</div>;
   }
 
   return (
@@ -118,18 +135,33 @@ export default function AdminDashboard() {
           <span>Download Excel</span>
         </button>
       </div>
-      
+
       <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="min-w-full">
           <thead>
             <tr className="bg-gray-50">
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nickname</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                ID
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Nickname
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Phone
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Age
+              </th>
               {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Family Size</th> */}
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Status
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -137,30 +169,31 @@ export default function AdminDashboard() {
               <tr key={reg.id}>
                 {editingId === reg.id ? (
                   <>
+                    <td className="px-6 py-4">{reg.tId}</td>
                     <td className="px-6 py-4">
                       <input
                         className="border rounded px-2 py-1 w-full"
                         value={editForm.firstName}
-                        onChange={(e) => setEditForm({...editForm, firstName: e.target.value})}
+                        onChange={(e) => setEditForm({ ...editForm, firstName: e.target.value })}
                       />
                       <input
                         className="border rounded px-2 py-1 w-full mt-1"
                         value={editForm.lastName}
-                        onChange={(e) => setEditForm({...editForm, lastName: e.target.value})}
+                        onChange={(e) => setEditForm({ ...editForm, lastName: e.target.value })}
                       />
                     </td>
                     <td className="px-6 py-4">
                       <input
                         className="border rounded px-2 py-1 w-full"
                         value={editForm.nickName}
-                        onChange={(e) => setEditForm({...editForm, nickName: e.target.value})}
+                        onChange={(e) => setEditForm({ ...editForm, nickName: e.target.value })}
                       />
                     </td>
                     <td className="px-6 py-4">
                       <input
                         className="border rounded px-2 py-1 w-full"
                         value={editForm.phone}
-                        onChange={(e) => setEditForm({...editForm, phone: e.target.value})}
+                        onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
                       />
                     </td>
                     <td className="px-6 py-4">
@@ -168,7 +201,9 @@ export default function AdminDashboard() {
                         type="number"
                         className="border rounded px-2 py-1 w-20"
                         value={editForm.age}
-                        onChange={(e) => setEditForm({...editForm, age: parseInt(e.target.value)})}
+                        onChange={(e) =>
+                          setEditForm({ ...editForm, age: parseInt(e.target.value) })
+                        }
                       />
                     </td>
                     {/* <td className="px-6 py-4">
@@ -183,7 +218,9 @@ export default function AdminDashboard() {
                       <select
                         className="border rounded px-2 py-1"
                         value={editForm.attendance}
-                        onChange={(e) => setEditForm({...editForm, attendance: e.target.value === 'true'})}
+                        onChange={(e) =>
+                          setEditForm({ ...editForm, attendance: e.target.value === "true" })
+                        }
                       >
                         <option value="false">Registered</option>
                         <option value="true">Attended</option>
@@ -197,6 +234,13 @@ export default function AdminDashboard() {
                         Save
                       </button>
                       <button
+                        onClick={() => handleDelete(reg.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded ml-2"
+                      >
+                        Delete
+                      </button>
+
+                      <button
                         onClick={() => setEditingId(null)}
                         className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded"
                       >
@@ -206,16 +250,23 @@ export default function AdminDashboard() {
                   </>
                 ) : (
                   <>
-                    <td className="px-6 py-4">{reg.firstName} {reg.lastName}</td>
+                    <td className="px-6 py-4">{reg.tId}</td>
+                    <td className="px-6 py-4">
+                      {reg.firstName} {reg.lastName}
+                    </td>
                     <td className="px-6 py-4">{reg.nickName}</td>
                     <td className="px-6 py-4">{reg.phone}</td>
                     <td className="px-6 py-4">{reg.age}</td>
                     {/* <td className="px-6 py-4">{reg.familySize}</td> */}
                     <td className="px-6 py-4">
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        reg.attendance ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {reg.attendance ? 'Attended' : 'Registered'}
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          reg.attendance
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {reg.attendance ? "Attended" : "Registered"}
                       </span>
                     </td>
                     <td className="px-6 py-4">
@@ -234,5 +285,5 @@ export default function AdminDashboard() {
         </table>
       </div>
     </div>
-  )
+  );
 }

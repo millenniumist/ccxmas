@@ -11,6 +11,7 @@ export async function POST(request) {
     
     const registration = await prisma.christmasRegistration.create({
       data: {
+        tId: data.tId,
         firstName: data.firstName,
         lastName: data.lastName,
         nickName: data.nickName,

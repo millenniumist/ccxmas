@@ -22,7 +22,7 @@ export default function TicketPage({ params }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-800 to-red-900 py-12 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#071E48] to-black py-12 relative overflow-hidden">
       {/* Floating Doves */}
       <motion.div
         animate={{ x: [0, 100, 0], y: [0, -50, 0] }}
@@ -63,9 +63,9 @@ export default function TicketPage({ params }) {
                 animate={{ scale: 1 }}
                 className="bg-white/40 backdrop-blur-sm rounded-2xl p-4"
               >
-                <div className="bg-gradient-to-r from-red-600 via-gold to-green-600 text-transparent bg-clip-text">
+                <div className=" bg-clip-text">
                   <h1 className="text-4xl font-bold mb-2">บัตรเข้าร่วมงาน</h1>
-                  <h2 className="text-3xl font-semibold">เฉลิมฉลองคริสต์มาส</h2>
+                  <h2 className="text-3xl font-semibold text-red-900">กรุณาแคปหน้าจอ  📸 📱</h2>
                 </div>
               </motion.div>
               <motion.div
@@ -122,8 +122,9 @@ export default function TicketPage({ params }) {
                 transition={{ duration: 2, repeat: Infinity }}
               >
                 <p className="text-lg text-red-700 font-medium">
-                  กรุณาแสดงภาพถ่ายหน้าจอนี้ที่ทางเข้างาน
+                  กรุณาถ่ายภาพนี้ 📸  หรือแคปหน้านี้ 📱 
                 </p>
+                <p>เพื่อแสดงที่โต๊ะลงทะเบียนก่อนเข้างาน</p>
               </motion.div>
 
               <div className="mt-6 bg-white/30 backdrop-blur-sm rounded-xl p-2 inline-block">
