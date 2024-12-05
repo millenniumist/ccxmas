@@ -4,8 +4,7 @@ import { useState } from "react";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
 
 export default function ChristmasRegistration() {
   const [formData, setFormData] = useState({
@@ -23,7 +22,6 @@ export default function ChristmasRegistration() {
   const [isHovering, setIsHovering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [pdpaConsent, setPdpaConsent] = useState(false);
-
 
   const handleCornerTap = () => {
     setTapCount((prev) => {
@@ -54,11 +52,11 @@ export default function ChristmasRegistration() {
   };
   // In handleSubmit function, update the formData structure:
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    
-    if (isLoading || !pdpaConsent) return
-    
-    setIsLoading(true)
+    e.preventDefault();
+
+    if (isLoading || !pdpaConsent) return;
+
+    setIsLoading(true);
 
     const submissionData = {
       tId: generateShortId(),
@@ -71,38 +69,37 @@ export default function ChristmasRegistration() {
       notes: formData.notes?.trim() || null,
       familySize: formData.familySize || "1",
       address: formData.address?.trim() || null,
-    }
+    };
 
     try {
       const response = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submissionData),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (response.ok) {
-        triggerConfetti()
+        triggerConfetti();
         const queryParams = new URLSearchParams({
           firstName: submissionData.firstName,
           lastName: submissionData.lastName,
           nickName: submissionData.nickName,
-        }).toString()
+        }).toString();
 
         setTimeout(() => {
-          window.location.href = `/ticket/${data.tId}?${queryParams}`
-        }, 1000)
+          window.location.href = `/ticket/${data.tId}?${queryParams}`;
+        }, 1000);
       } else {
-        throw new Error(data.error || "ลงทะเบียนไม่สำเร็จ")
+        throw new Error(data.error || "ลงทะเบียนไม่สำเร็จ");
       }
     } catch (error) {
-      alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง")
-      console.error("Error:", error)
-      setIsLoading(false)
+      alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง");
+      console.error("Error:", error);
+      setIsLoading(false);
     }
-}
-
+  };
 
   const RequiredStar = () => <span className="text-red-500 animate-pulse ml-1">*</span>;
 
@@ -168,10 +165,14 @@ export default function ChristmasRegistration() {
         className="container mx-auto px-4"
       >
         <div className="max-w-md mx-auto bg-neutral-200 backdrop-blur-lg rounded-lg shadow-2xl p-8 relative">
-          <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-red-600 to-green-600 bg-clip-text text-transparent">
-            ลงทะเบียนงานเฉลิมฉลองคริสต์มาส
-          </h2>
-          <p className="text-center italic p-2">วันที่ 24 ธันวาคม 2024 ณ คริสตจักรชลบุรี</p>
+        <h2 className="text-4xl font-bold text-center bg-gradient-to-r from-red-600 to-green-600 bg-clip-text text-transparent mb-4">
+    ลงทะเบียนร่วมงาน
+  </h2>
+  <div className="space-y-2 mb-4">
+    <h3 className="text-xl font-semibold text-center text-green-800">คริสต์มาสแห่งความหวัง</h3>
+    <p className="text-center text-red-700 font-medium">24 ธันวาคม 2024</p>
+    <p className="text-center text-green-800 font-medium">ณ คริสตจักรชลบุรี</p>
+  </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -265,20 +266,22 @@ export default function ChristmasRegistration() {
               />
             </div>
             <div className="space-y-2">
-  <div className="flex items-start gap-2">
-    <input
-      type="checkbox"
-      id="pdpaConsent"
-      checked={pdpaConsent}
-      onChange={(e) => setPdpaConsent(e.target.checked)}
-      className="mt-1"
-      required
-    />
-    <label htmlFor="pdpaConsent" className="text-sm text-gray-700">
-      ข้าพเจ้ายินยอมให้จัดเก็บข้อมูลส่วนบุคคลตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 เพื่อใช้ในการลงทะเบียนและติดต่อสื่อสารเกี่ยวกับงานคริสต์มาสเท่านั้น <RequiredStar />
-    </label>
-  </div>
-</div>
+              <div className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  id="pdpaConsent"
+                  checked={pdpaConsent}
+                  onChange={(e) => setPdpaConsent(e.target.checked)}
+                  className="mt-1"
+                  required
+                />
+                <label htmlFor="pdpaConsent" className="text-sm text-gray-700">
+                  ข้าพเจ้ายินยอมให้จัดเก็บข้อมูลส่วนบุคคลตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ.
+                  2562 เพื่อใช้ในการลงทะเบียนและติดต่อสื่อสารเกี่ยวกับงานคริสต์มาสเท่านั้น{" "}
+                  <RequiredStar />
+                </label>
+              </div>
+            </div>
 
             <motion.button
               type="submit"
@@ -298,14 +301,11 @@ export default function ChristmasRegistration() {
                     กำลังลงทะเบียน...
                   </>
                 ) : (
-                  <>
-                    ลงทะเบียนเข้าร่วมงานคริสต์มาส 
-                  </>
+                  <>ลงทะเบียนเข้าร่วมงานคริสต์มาส</>
                 )}
               </span>
             </motion.button>
           </form>
-
         </div>
       </motion.div>
     </div>
