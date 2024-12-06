@@ -98,7 +98,7 @@ export default function TicketPage({ params }) {
                     className="flex items-center justify-center space-x-3"
                     whileHover={{ scale: 1.05 }}
                   >
-                    <p className="font-semibold pt-2">📅 24 ธันวาคม 2567 <span className="px-2">⏰ 17:00 น.</span>  </p>
+                    <p className="font-semibold pt-2">📅 24 ธันวาคม 2024 <span className="px-2">⏰ 17:00 น.</span>  </p>
                   </motion.div>
                   <motion.div
                     className="flex items-center justify-center space-x-3"
