@@ -27,14 +27,14 @@ export default function TicketPage({ params }) {
       <motion.div
         animate={{ x: [0, 100, 0], y: [0, -50, 0] }}
         transition={{ duration: 20, repeat: Infinity }}
-        className="absolute top-20 left-10 text-4xl"
+        className="absolute top-20 left-10 text-4xl z-50"
       >
-        🕊️
+      🕊️
       </motion.div>
       <motion.div
         animate={{ x: [0, -100, 0], y: [0, -30, 0] }}
         transition={{ duration: 15, repeat: Infinity }}
-        className="absolute top-40 right-10 text-4xl"
+        className="absolute top-40 right-10 text-4xl z-50"
       >
         🕊️
       </motion.div>
@@ -51,21 +51,21 @@ export default function TicketPage({ params }) {
                 src="/images/card.jpg"
                 alt="Ticket Background"
                 fill
-                className="rounded-lg"
+                className="rounded-lg min-h-screen"
                 priority
                 quality={100}
               />
             </div>
-
-            <div className="relative z-10 p-8 text-center space-y-6">
+      
+            <div className="relative z-10 p-8 text-center space-y-8 items-center">
               <motion.div
                 initial={{ scale: 0.9 }}
                 animate={{ scale: 1 }}
                 className="bg-white/40 backdrop-blur-sm rounded-2xl p-4"
               >
                 <div className=" bg-clip-text">
-                  <h1 className="text-4xl font-bold mb-2">บัตรเข้าร่วมงาน</h1>
-                  <h2 className="text-3xl font-semibold text-red-900">กรุณาแคปหน้าจอ  📸 📱</h2>
+                  <h2 className="text-3xl font-semibold text-red-600">กรุณาแคปหน้าจอ  📸 </h2>
+                  <h2 className="text-xl font-semibold ">เพื่อแสดงที่โต๊ะลงทะเบียนก่อนเข้างาน</h2>
                 </div>
               </motion.div>
               <motion.div
@@ -73,38 +73,39 @@ export default function TicketPage({ params }) {
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <div className="text-2xl font-bold text-emerald-800 mb-4">
+                {/* <div className="text-2xl font-bold text-emerald-800 mb-4">
                   หมายเลขบัตร: {resolvedParams.id}
-                </div>
+                </div> */}
 
                 {userData && (
-                  <div className="space-y-3 mb-6">
+                  <div className="space-y-3 mb-6 text-2xl">
+                    
                     <motion.div
-                      className="text-xl font-semibold text-emerald-700"
+                      className="text-xl font-semibold  "
                       whileHover={{ scale: 1.02 }}
                     >
-                      {userData.firstName} {userData.lastName}
+                      เรียนเชิญ 
                     </motion.div>
-                    <motion.div className="text-lg text-emerald-600" whileHover={{ scale: 1.02 }}>
-                      ชื่อเล่น: {userData.nickName}
-                    </motion.div>
+                      <p className="text-3xl font-semibold text-[#355287]">{userData.firstName} {userData.lastName}</p>
+                      <p className="text-xl font-semibold  pt-4">ร่วมงาน</p>
+                      <p className="text-3xl font-semibold text-[#355287]">คริสต์มาสแห่งความหวัง</p>
                   </div>
                 )}
 
-                <div className="space-y-4 my-6 text-xl">
+
+                <div className="space-y-2  text-xl"> 
                   <motion.div
                     className="flex items-center justify-center space-x-3"
                     whileHover={{ scale: 1.05 }}
                   >
-                    <span className="text-red-600">📅</span>
-                    <p className="font-semibold">24 ธันวาคม 2567</p>
+                    <p className="font-semibold pt-2">📅 24 ธันวาคม 2567 <span className="px-2">⏰ 17:00 น.</span>  </p>
                   </motion.div>
                   <motion.div
                     className="flex items-center justify-center space-x-3"
                     whileHover={{ scale: 1.05 }}
                   >
-                    <span className="text-red-600">⏰</span>
-                    <p className="font-semibold">17:00 น.</p>
+                    {/* <span className="text-red-600"></span> */}
+                    <p className="font-semibold"></p>
                   </motion.div>
                   <motion.div
                     className="flex items-center justify-center space-x-3"
@@ -116,7 +117,7 @@ export default function TicketPage({ params }) {
                 </div>
               </motion.div>
 
-              <motion.div
+              {/* <motion.div
                 className="bg-gradient-to-r from-red-100 via-white to-green-100 p-6 rounded-xl shadow-inner"
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
@@ -125,9 +126,9 @@ export default function TicketPage({ params }) {
                   กรุณาถ่ายภาพนี้ 📸  หรือแคปหน้านี้ 📱 
                 </p>
                 <p>เพื่อแสดงที่โต๊ะลงทะเบียนก่อนเข้างาน</p>
-              </motion.div>
+              </motion.div> */}
 
-              <div className="mt-6 bg-white/30 backdrop-blur-sm rounded-xl p-2 inline-block">
+              <div className="mt-6 bg-white/30 backdrop-blur-sm rounded-xl p-1 inline-block">
                 <p className="text-gray-800">ออกบัตรเมื่อ: {currentDate}</p>
               </div>
             </div>
@@ -137,3 +138,6 @@ export default function TicketPage({ params }) {
     </div>
   );
 }
+
+
+

@@ -165,35 +165,37 @@ export default function ChristmasRegistration() {
         className="container mx-auto px-4"
       >
         <div className="max-w-md mx-auto bg-neutral-200 backdrop-blur-lg rounded-lg shadow-2xl p-8 relative">
-        <h2 className="text-4xl font-bold text-center bg-gradient-to-r from-red-600 to-green-600 bg-clip-text text-transparent mb-4">
-    ลงทะเบียนร่วมงาน
-  </h2>
-  <div className="space-y-2 mb-4">
-    <h3 className="text-xl font-semibold text-center text-green-800">คริสต์มาสแห่งความหวัง</h3>
-    <p className="text-center text-red-700 font-medium">24 ธันวาคม 2024</p>
-    <p className="text-center text-green-800 font-medium">ณ คริสตจักรชลบุรี</p>
-  </div>
+          <h2 className="text-2xl font-bold text-center  text-[#071E48] bg-clip-text text-transparent mb-4">
+            ลงทะเบียนร่วมงาน
+          </h2>
+          <div className="space-y-2 mb-4">
+            <h2 className="text-3xl font-semibold text-center text-[#071E48] mb-4">
+              คริสต์มาสแห่งความหวัง
+            </h2>
+            <p className="text-center text-[#071E48] font-medium mt-0">24 ธันวาคม 2024 เวลา 17:00 น</p>
+            <p className="text-center text-[#071E48] font-medium mt-0">ณ คริสตจักรชลบุรี</p>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium mb-1 text-green-800">
+              <label className="block text-sm font-medium mb-1 text-[#16288b]">
                 ชื่อจริง <RequiredStar />
               </label>
               <input
                 type="text"
-                className="w-full border-2 border-red-100 rounded-lg p-2 focus:border-green-400 focus:ring-2 focus:ring-green-200 transition-all duration-300"
+                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
                 value={formData.firstName}
                 onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-green-800">
+              <label className="block text-sm font-medium mb-1 text-[#16288b]">
                 นามสกุล <RequiredStar />
               </label>
               <input
                 type="text"
-                className="w-full border-2 border-red-100 rounded-lg p-2 focus:border-green-400 focus:ring-2 focus:ring-green-200 transition-all duration-300"
+                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
                 value={formData.lastName}
                 onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 required
@@ -201,12 +203,12 @@ export default function ChristmasRegistration() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1 text-green-800">
+              <label className="block text-sm font-medium mb-1 text-[#16288b]">
                 ชื่อเล่น <RequiredStar />
               </label>
               <input
                 type="text"
-                className="w-full border-2 border-red-100 rounded-lg p-2 focus:border-green-400 focus:ring-2 focus:ring-green-200 transition-all duration-300"
+                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
                 value={formData.nickName}
                 onChange={(e) => setFormData({ ...formData, nickName: e.target.value })}
                 required
@@ -214,12 +216,12 @@ export default function ChristmasRegistration() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1 text-green-800">
+              <label className="block text-sm font-medium mb-1 text-[#16288b]">
                 เบอร์โทรศัพท์ <RequiredStar />
               </label>
               <input
                 type="tel"
-                className="w-full border-2 border-red-100 rounded-lg p-2 focus:border-green-400 focus:ring-2 focus:ring-green-200 transition-all duration-300"
+                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 required
@@ -227,38 +229,27 @@ export default function ChristmasRegistration() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1 text-green-800">
+              <label className="block text-sm font-medium mb-1 text-[#16288b]">
                 อายุ <RequiredStar />
               </label>
               <input
                 type="number"
                 min="0"
-                className="w-full border-2 border-red-100 rounded-lg p-2 focus:border-green-400 focus:ring-2 focus:ring-green-200 transition-all duration-300"
+                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
                 value={formData.age}
                 onChange={(e) => setFormData({ ...formData, age: Number(e.target.value) })}
                 required
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1 text-green-800">
-                ข้อจำกัดด้านอาหาร
-              </label>
-              <input
-                type="text"
-                className="w-full border-2 border-red-100 rounded-lg p-2 focus:border-green-400 focus:ring-2 focus:ring-green-200 transition-all duration-300"
-                value={formData.dietary}
-                onChange={(e) => setFormData({ ...formData, dietary: e.target.value })}
-                placeholder="แพ้อาหารหรือข้อจำกัดในการรับประทานอาหาร"
-              />
-            </div>
+
 
             <div>
-              <label className="block text-sm font-medium mb-1 text-green-800">
+              <label className="block text-sm font-medium mb-1 text-[#16288b]">
                 หมายเหตุเพิ่มเติม
               </label>
               <textarea
-                className="w-full border-2 border-red-100 rounded-lg p-2 focus:border-green-400 focus:ring-2 focus:ring-green-200 transition-all duration-300"
+                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 rows={3}
@@ -275,7 +266,7 @@ export default function ChristmasRegistration() {
                   className="mt-1"
                   required
                 />
-                <label htmlFor="pdpaConsent" className="text-sm text-gray-700">
+                <label htmlFor="pdpaConsent" className="text-sm text-[#16288b]">
                   ข้าพเจ้ายินยอมให้จัดเก็บข้อมูลส่วนบุคคลตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ.
                   2562 เพื่อใช้ในการลงทะเบียนและติดต่อสื่อสารเกี่ยวกับงานคริสต์มาสเท่านั้น{" "}
                   <RequiredStar />
@@ -286,7 +277,7 @@ export default function ChristmasRegistration() {
             <motion.button
               type="submit"
               disabled={isLoading}
-              className={`w-full bg-gradient-to-r from-indigo-950 to-yellow-500 text-white font-bold py-4 rounded-lg shadow-xl relative overflow-hidden group ${
+              className={`w-full  bg-indigo-950 text-white font-bold py-4 rounded-lg shadow-xl relative overflow-hidden group ${
                 isLoading ? "opacity-75 cursor-not-allowed" : ""
               }`}
               whileHover={{ scale: isLoading ? 1 : 1.02 }}
