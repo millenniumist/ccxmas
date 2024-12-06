@@ -22,7 +22,7 @@ export default function TicketPage({ params }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#071E48] to-black py-12 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#071E48] to-black  relative overflow-hidden">
       {/* Floating Doves */}
       <motion.div
         animate={{ x: [0, 100, 0], y: [0, -50, 0] }}
