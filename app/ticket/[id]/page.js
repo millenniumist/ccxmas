@@ -98,8 +98,9 @@ export default function TicketPage({ params }) {
                     className="flex items-center justify-center space-x-3"
                     whileHover={{ scale: 1.05 }}
                   >
-                    <p className="font-semibold pt-2">📅 24 ธันวาคม 2024 <span className="px-2">⏰ 17:00 น.</span>  </p>
                   </motion.div>
+                    <div className="font-semibold pt-2">📅 24 ธันวาคม 2024 </div>
+                    <div className="font-semibold pt-2"> ⏰ 17:00 น. </div>
                   <motion.div
                     className="flex items-center justify-center space-x-3"
                     whileHover={{ scale: 1.05 }}
@@ -111,23 +112,10 @@ export default function TicketPage({ params }) {
                     className="flex items-center justify-center space-x-3"
                     whileHover={{ scale: 1.05 }}
                   >
-                    <span className="text-red-600">📍</span>
-                    <p className="font-semibold">คริสตจักรชลบุรี</p>
+                    <p className="font-semibold">📍 คริสตจักรชลบุรี</p>
                   </motion.div>
                 </div>
               </motion.div>
-
-              {/* <motion.div
-                className="bg-gradient-to-r from-red-100 via-white to-green-100 p-6 rounded-xl shadow-inner"
-                animate={{ scale: [1, 1.02, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <p className="text-lg text-red-700 font-medium">
-                  กรุณาถ่ายภาพนี้ 📸  หรือแคปหน้านี้ 📱 
-                </p>
-                <p>เพื่อแสดงที่โต๊ะลงทะเบียนก่อนเข้างาน</p>
-              </motion.div> */}
-
               <div className="mt-6 bg-white/30 backdrop-blur-sm rounded-xl p-1 inline-block">
                 <p className="text-gray-800">ออกบัตรเมื่อ: {currentDate}</p>
               </div>
