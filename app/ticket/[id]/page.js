@@ -12,7 +12,7 @@ export default function TicketPage({ params }) {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString("th-TH"));
+    setCurrentDate(new Date().toLocaleString("en-US"));
     const searchParams = new URLSearchParams(window.location.search);
     setUserData({
       firstName: searchParams.get("firstName"),
