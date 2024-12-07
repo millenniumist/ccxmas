@@ -4,7 +4,6 @@ import { useState } from "react";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { v4 as uuidv4 } from "uuid";
 
 export default function ChristmasRegistration() {
   const [formData, setFormData] = useState({
@@ -47,9 +46,6 @@ export default function ChristmasRegistration() {
       disableForReducedMotion: true,
     });
   };
-  const generateShortId = () => {
-    return uuidv4().substring(0, 5);
-  };
   // In handleSubmit function, update the formData structure:
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,7 +55,6 @@ export default function ChristmasRegistration() {
     setIsLoading(true);
 
     const submissionData = {
-      tId: generateShortId(),
       firstName: formData.firstName.trim(),
       lastName: formData.lastName.trim(),
       nickName: formData.nickName.trim(),
@@ -72,7 +67,7 @@ export default function ChristmasRegistration() {
     };
 
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("/api/ticket", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submissionData),
@@ -83,13 +78,13 @@ export default function ChristmasRegistration() {
       if (response.ok) {
         triggerConfetti();
         const queryParams = new URLSearchParams({
-          firstName: submissionData.firstName,
-          lastName: submissionData.lastName,
-          nickName: submissionData.nickName,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          nickName: data.nickName,
         }).toString();
 
         setTimeout(() => {
-          window.location.href = `/ticket/${data.tId}?${queryParams}`;
+          window.location.href = `/ticket/${data.tId}`;
         }, 1000);
       } else {
         throw new Error(data.error || "ลงทะเบียนไม่สำเร็จ");

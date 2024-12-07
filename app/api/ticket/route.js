@@ -2,8 +2,13 @@
 
 import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server'
+import { v4 as uuidv4 } from "uuid";
 
 const prisma = new PrismaClient()
+
+const generateShortId = () => {
+  return uuidv4().substring(0, 5);
+};
 
 export async function POST(request) {
   try {
@@ -11,7 +16,7 @@ export async function POST(request) {
     
     const registration = await prisma.christmasRegistration.create({
       data: {
-        tId: data.tId,
+        tId: generateShortId(),
         firstName: data.firstName,
         lastName: data.lastName,
         nickName: data.nickName,
