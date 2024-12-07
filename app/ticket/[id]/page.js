@@ -68,7 +68,7 @@ export default function TicketPage({ params }) {
                   className="bg-white/40 backdrop-blur-sm rounded-2xl p-4"
                 >
                   <div className=" bg-clip-text">
-                    <h2 className="text-3xl font-semibold text-red-600">
+                    <h2 className="text-4xl font-semibold text-red-600">
                       กรุณาแคปหน้าจอ 📸{" "}
                     </h2>
                     <h2 className="text-xl font-semibold ">
@@ -87,23 +87,23 @@ export default function TicketPage({ params }) {
 
                   <div className="mb-8">
                     <motion.div
-                      className="text-2xl font-semibold  "
+                      className="text-3xl font-semibold  "
                       whileHover={{ scale: 1.02 }}
                     >
                       เรียนเชิญ
                     </motion.div>
-                    <p className="text-3xl font-semibold text-[#355287]">
+                    <p className="text-4xl font-semibold text-[#355287]">
                       {userData.firstName} {userData.lastName}
                     </p>
                   </div>
                   <div className="mb-8">
-                    <p className="text-2xl font-semibold  pt-4">ร่วมงาน</p>
-                    <p className="text-3xl font-semibold text-[#355287]">
+                    <p className="text-3xl font-semibold  pt-4">ร่วมงาน</p>
+                    <p className="text-4xl font-semibold text-[#355287]">
                       คริสต์มาสแห่งความหวัง
                     </p>
                   </div>
 
-                  <div className="space-y-2  text-xl">
+                  <div className="space-y-2  text-2xl">
                     <motion.div
                       className="flex items-center justify-center space-x-3"
                       whileHover={{ scale: 1.05 }}
@@ -127,7 +127,7 @@ export default function TicketPage({ params }) {
                     </motion.div>
                   </div>
                 </motion.div>
-                <div className="mt-6 bg-white/30 backdrop-blur-sm rounded-xl p-1 inline-block">
+                <div className="mt-6 bg-white/30 backdrop-blur-sm rounded-xl p-1 inline-block text-xl">
                   <p className="text-gray-800">ออกบัตรเมื่อ: {currentDate}</p>
                 </div>
               </div>
