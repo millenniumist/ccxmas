@@ -18,7 +18,7 @@ export default function TicketPage({ params }) {
       lastName: ticket.lastName,
       nickName: ticket.nickName,
     });
-    setCurrentDate(new Date(ticket.createdAt).toLocaleString("en-US"));
+    setCurrentDate(new Date(ticket.createdAt).toLocaleString("en-GB"));
   };
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function TicketPage({ params }) {
 
                   <div className="mb-8">
                     <motion.div
-                      className="text-3xl font-semibold  "
+                      className="text-3xl font-semibold mb-2"
                       whileHover={{ scale: 1.02 }}
                     >
                       เรียนเชิญ
@@ -97,7 +97,7 @@ export default function TicketPage({ params }) {
                     </p>
                   </div>
                   <div className="mb-8">
-                    <p className="text-3xl font-semibold  pt-4">ร่วมงาน</p>
+                    <p className="text-3xl font-semibold pt-4 mb-2">ร่วมงาน</p>
                     <p className="text-4xl font-semibold text-[#355287]">
                       คริสต์มาสแห่งความหวัง
                     </p>
