@@ -5,7 +5,7 @@ import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
-const CLOSED_TIME = new Date(2024, 11, 25, 15, 0, 0) // Close time = 25 Dec 2024 15:00
+const CLOSED_TIME = new Date(2024, 11, 24, 15, 0, 0) // Close time = 24 Dec 2024 15:00
 
 export default function ChristmasRegistration() {
   const [formData, setFormData] = useState({
