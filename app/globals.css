@@ -6,7 +6,14 @@
 :root {
   color-scheme: light;
   --text: #000000;
+  font-size: 3vw;
   /* Add other color variables you need */
+}
+
+@media only screen and (min-width: 1175px) {
+  :root {
+    font-size: 16px;
+  }
 }
 
 /* Override dark mode detection */

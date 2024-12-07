@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'your-secret-key') 
 
 export async function middleware(request) {
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
@@ -12,7 +13,6 @@ export async function middleware(request) {
     }
 
     try {
-      const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET)
       await jwtVerify(authToken.value, JWT_SECRET)
       return NextResponse.next()
     } catch (error) {

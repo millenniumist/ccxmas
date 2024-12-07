@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { v4 as uuidv4 } from "uuid";
+
+const CLOSED_TIME = new Date(2024, 11, 25, 15, 0, 0) // Close time = 25 Dec 2024 15:00
 
 export default function ChristmasRegistration() {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ export default function ChristmasRegistration() {
   const [isHovering, setIsHovering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [pdpaConsent, setPdpaConsent] = useState(false);
+  const [isClosed, setIsClosed] = useState(false);
 
   const handleCornerTap = () => {
     setTapCount((prev) => {
@@ -47,9 +49,6 @@ export default function ChristmasRegistration() {
       disableForReducedMotion: true,
     });
   };
-  const generateShortId = () => {
-    return uuidv4().substring(0, 5);
-  };
   // In handleSubmit function, update the formData structure:
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,7 +58,6 @@ export default function ChristmasRegistration() {
     setIsLoading(true);
 
     const submissionData = {
-      tId: generateShortId(),
       firstName: formData.firstName.trim(),
       lastName: formData.lastName.trim(),
       nickName: formData.nickName.trim(),
@@ -72,7 +70,7 @@ export default function ChristmasRegistration() {
     };
 
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("/api/ticket", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submissionData),
@@ -83,13 +81,13 @@ export default function ChristmasRegistration() {
       if (response.ok) {
         triggerConfetti();
         const queryParams = new URLSearchParams({
-          firstName: submissionData.firstName,
-          lastName: submissionData.lastName,
-          nickName: submissionData.nickName,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          nickName: data.nickName,
         }).toString();
 
         setTimeout(() => {
-          window.location.href = `/ticket/${data.tId}?${queryParams}`;
+          window.location.href = `/ticket/${data.tId}`;
         }, 1000);
       } else {
         throw new Error(data.error || "ลงทะเบียนไม่สำเร็จ");
@@ -102,6 +100,10 @@ export default function ChristmasRegistration() {
   };
 
   const RequiredStar = () => <span className="text-red-500 animate-pulse ml-1">*</span>;
+
+  useEffect(() => {
+    setIsClosed(Date.now() >= CLOSED_TIME.valueOf());
+  }, [])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#071E48] to-black py-12 relative overflow-hidden">
@@ -159,146 +161,171 @@ export default function ChristmasRegistration() {
 
       <div className="absolute top-0 right-0 w-16 h-16 cursor-default" onClick={handleCornerTap} />
 
-      <motion.div
+      {isClosed && (
+        <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="container mx-auto px-4"
       >
         <div className="max-w-md mx-auto bg-neutral-200 backdrop-blur-lg rounded-lg shadow-2xl p-8 relative">
-          <h2 className="text-2xl font-bold text-center  text-[#071E48] bg-clip-text text-transparent mb-4">
-            ลงทะเบียนร่วมงาน
-          </h2>
-          <div className="space-y-2 mb-4">
+          <div className="space-y-2 mb-12">
             <h2 className="text-3xl font-semibold text-center text-[#071E48] mb-4">
-              คริสต์มาสแห่งความหวัง
+            ขณะนี้ปิดรับลงทะเบียนแล้ว
             </h2>
-            <p className="text-center text-[#071E48] font-medium mt-0">24 ธันวาคม 2024 เวลา 17:00 น</p>
-            <p className="text-center text-[#071E48] font-medium mt-0">ณ คริสตจักรชลบุรี</p>
+          </div>
+          <div className="space-y-2 mb-8">
+            <p className="text-2xl text-center font-medium mt-0">
+              แต่ไม่ต้องกังวล! คุณสามารถเดินเข้าร่วมงานได้เลย เพียงแค่แวะมาหาเรา
+              </p>
+          </div>
+          <p className="text-xl text-center text-[#071E48] font-medium mt-0">24 ธันวาคม 2024 เวลา 17:00 น</p>
+          <p className="text-xl text-center text-[#071E48] font-medium mt-0">ณ คริสตจักรชลบุรี</p>
+          </div>
+          </motion.div>
+      )}
+
+     {!isClosed && (
+      <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="container mx-auto px-4"
+    >
+      <div className="max-w-md mx-auto bg-neutral-200 backdrop-blur-lg rounded-lg shadow-2xl p-8 relative">
+        <h2 className="text-2xl font-bold text-center  text-[#071E48] bg-clip-text text-transparent mb-4">
+          ลงทะเบียนร่วมงาน
+        </h2>
+        <div className="space-y-2 mb-4">
+          <h2 className="text-3xl font-semibold text-center text-[#071E48] mb-4">
+            คริสต์มาสแห่งความหวัง
+          </h2>
+          <p className="text-center text-[#071E48] font-medium mt-0">24 ธันวาคม 2024 เวลา 17:00 น</p>
+          <p className="text-center text-[#071E48] font-medium mt-0">ณ คริสตจักรชลบุรี</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-lg font-medium mb-1 text-[#16288b]">
+              ชื่อจริง <RequiredStar />
+            </label>
+            <input
+              type="text"
+              className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
+              value={formData.firstName}
+              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-lg font-medium mb-1 text-[#16288b]">
+              นามสกุล <RequiredStar />
+            </label>
+            <input
+              type="text"
+              className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
+              value={formData.lastName}
+              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+              required
+            />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium mb-1 text-[#16288b]">
-                ชื่อจริง <RequiredStar />
-              </label>
+          <div>
+            <label className="block text-lg font-medium mb-1 text-[#16288b]">
+              ชื่อเล่น <RequiredStar />
+            </label>
+            <input
+              type="text"
+              className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
+              value={formData.nickName}
+              onChange={(e) => setFormData({ ...formData, nickName: e.target.value })}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-lg font-medium mb-1 text-[#16288b]">
+              เบอร์โทรศัพท์ <RequiredStar />
+            </label>
+            <input
+              type="tel"
+              className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-lg font-medium mb-1 text-[#16288b]">
+              อายุ <RequiredStar />
+            </label>
+            <input
+              type="number"
+              min="0"
+              className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
+              value={formData.age}
+              onChange={(e) => setFormData({ ...formData, age: Number(e.target.value) })}
+              required
+            />
+          </div>
+
+
+
+          <div>
+            <label className="block text-lg font-medium mb-1 text-[#16288b]">
+              หมายเหตุเพิ่มเติม
+            </label>
+            <textarea
+              className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
+              value={formData.notes}
+              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              rows={3}
+              placeholder="ข้อมูลเพิ่มเติมที่ต้องการแจ้งให้ทราบ"
+            />
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-start gap-2">
               <input
-                type="text"
-                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
-                value={formData.firstName}
-                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                type="checkbox"
+                id="pdpaConsent"
+                checked={pdpaConsent}
+                onChange={(e) => setPdpaConsent(e.target.checked)}
+                className="mt-1"
                 required
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1 text-[#16288b]">
-                นามสกุล <RequiredStar />
+              <label htmlFor="pdpaConsent" className="text-sm text-[#16288b]">
+                ข้าพเจ้ายินยอมให้จัดเก็บข้อมูลส่วนบุคคลตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ.
+                2562 เพื่อใช้ในการลงทะเบียนและติดต่อสื่อสารเกี่ยวกับงานคริสต์มาสเท่านั้น{" "}
+                <RequiredStar />
               </label>
-              <input
-                type="text"
-                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
-                value={formData.lastName}
-                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                required
-              />
             </div>
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1 text-[#16288b]">
-                ชื่อเล่น <RequiredStar />
-              </label>
-              <input
-                type="text"
-                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
-                value={formData.nickName}
-                onChange={(e) => setFormData({ ...formData, nickName: e.target.value })}
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1 text-[#16288b]">
-                เบอร์โทรศัพท์ <RequiredStar />
-              </label>
-              <input
-                type="tel"
-                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1 text-[#16288b]">
-                อายุ <RequiredStar />
-              </label>
-              <input
-                type="number"
-                min="0"
-                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
-                value={formData.age}
-                onChange={(e) => setFormData({ ...formData, age: Number(e.target.value) })}
-                required
-              />
-            </div>
-
-
-
-            <div>
-              <label className="block text-sm font-medium mb-1 text-[#16288b]">
-                หมายเหตุเพิ่มเติม
-              </label>
-              <textarea
-                className="w-full border-2  rounded-lg p-2 focus:ring-2  transition-all duration-300"
-                value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                rows={3}
-                placeholder="ข้อมูลเพิ่มเติมที่ต้องการแจ้งให้ทราบ"
-              />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-start gap-2">
-                <input
-                  type="checkbox"
-                  id="pdpaConsent"
-                  checked={pdpaConsent}
-                  onChange={(e) => setPdpaConsent(e.target.checked)}
-                  className="mt-1"
-                  required
-                />
-                <label htmlFor="pdpaConsent" className="text-sm text-[#16288b]">
-                  ข้าพเจ้ายินยอมให้จัดเก็บข้อมูลส่วนบุคคลตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ.
-                  2562 เพื่อใช้ในการลงทะเบียนและติดต่อสื่อสารเกี่ยวกับงานคริสต์มาสเท่านั้น{" "}
-                  <RequiredStar />
-                </label>
-              </div>
-            </div>
-
-            <motion.button
-              type="submit"
-              disabled={isLoading}
-              className={`w-full  bg-indigo-950 text-white font-bold py-4 rounded-lg shadow-xl relative overflow-hidden group ${
-                isLoading ? "opacity-75 cursor-not-allowed" : ""
-              }`}
-              whileHover={{ scale: isLoading ? 1 : 1.02 }}
-              whileTap={{ scale: isLoading ? 1 : 0.98 }}
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-            >
-              <span className="relative z-10 flex items-center justify-center gap-2">
-                {isLoading ? (
-                  <>
-                    <span className="animate-spin">🎄</span>
-                    กำลังลงทะเบียน...
-                  </>
-                ) : (
-                  <>ลงทะเบียนเข้าร่วมงานคริสต์มาส</>
-                )}
-              </span>
-            </motion.button>
-          </form>
-        </div>
-      </motion.div>
+          <motion.button
+            type="submit"
+            disabled={isLoading}
+            className={`w-full  bg-indigo-950 text-white font-bold py-4 rounded-lg shadow-xl relative overflow-hidden group ${
+              isLoading ? "opacity-75 cursor-not-allowed" : ""
+            }`}
+            whileHover={{ scale: isLoading ? 1 : 1.02 }}
+            whileTap={{ scale: isLoading ? 1 : 0.98 }}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
+            <span className="relative z-10 flex items-center justify-center gap-2">
+              {isLoading ? (
+                <>
+                  <span className="animate-spin">🎄</span>
+                  กำลังลงทะเบียน...
+                </>
+              ) : (
+                <>ลงทะเบียนเข้าร่วมงานคริสต์มาส</>
+              )}
+            </span>
+          </motion.button>
+        </form>
+      </div>
+    </motion.div>
+     )} 
     </div>
   );
 }
