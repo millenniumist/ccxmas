@@ -39,11 +39,11 @@ export default function TicketPage({ params }) {
         🕊️
       </motion.div>
 
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-md mx-auto relative"
+          className="max-w-xl mx-auto"
         >
           <div className="relative rounded-lg shadow-2xl">
             <div className="absolute inset-0 z-0">
@@ -78,17 +78,20 @@ export default function TicketPage({ params }) {
                 </div> */}
 
                 {userData && (
-                  <div className="space-y-3 mb-6 text-2xl">
-                    
+                  <div>
+                    <div className="mb-8">
                     <motion.div
-                      className="text-xl font-semibold  "
+                      className="text-2xl font-semibold  "
                       whileHover={{ scale: 1.02 }}
                     >
                       เรียนเชิญ 
                     </motion.div>
                       <p className="text-3xl font-semibold text-[#355287]">{userData.firstName} {userData.lastName}</p>
-                      <p className="text-xl font-semibold  pt-4">ร่วมงาน</p>
-                      <p className="text-3xl font-semibold text-[#355287]">คริสต์มาสแห่งความหวัง</p>
+                      </div>
+                      <div className="mb-8">
+                        <p className="text-2xl font-semibold  pt-4">ร่วมงาน</p>
+                        <p className="text-3xl font-semibold text-[#355287]">คริสต์มาสแห่งความหวัง</p>
+                      </div>
                   </div>
                 )}
 

@@ -6,6 +6,7 @@
 :root {
   color-scheme: light;
   --text: #000000;
+  font-size: 14px;
   /* Add other color variables you need */
 }
 
