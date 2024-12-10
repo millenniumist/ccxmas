@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "cockroachdb"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -16,7 +16,7 @@ model Admin {
 }
 
 model ChristmasRegistration {
-  id         Int   @id @default(sequence())
+  id         Int   @id @default(autoincrement())
   tId        String 
   firstName  String
   lastName   String
