@@ -5,7 +5,7 @@ import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
-const CLOSED_TIME = new Date(2024, 11, 24, 15, 0, 0) // Close time = 24 Dec 2024 15:00
+const CLOSED_TIME = new Date(2024, 11, 19, 15, 0, 0) // Close time = 19 Dec 2024 15:00
 
 export default function ChristmasRegistration() {
   const [formData, setFormData] = useState({
@@ -173,12 +173,13 @@ export default function ChristmasRegistration() {
             ขณะนี้ปิดรับลงทะเบียนแล้ว
             </h2>
           </div>
-          <div className="space-y-2 mb-8">
+          <div className=" mb-8">
             <p className="text-2xl text-center font-medium mt-0">
-              แต่ไม่ต้องกังวล! คุณสามารถเดินเข้าร่วมงานได้เลย เพียงแค่แวะมาหาเรา
+            ขอบคุณทุกๆ ท่านที่ให้ความสนใจเข้าร่วมงานคริสต์มาสของเรา
               </p>
+              <p className="text-2xl text-center font-medium mt-0"> อย่างไรก็ตาม <span className="text-2xl text-center font-medium mt-0"> ขณะนี้จำนวนผู้ลงทะเบียนเต็มแล้ว และไม่สามารถรับลงทะเบียนเพิ่มได้</span></p> 
+              <p className="text-2xl text-center font-medium mt-0 pt-4">ขออภัยในความไม่สะดวก หวังเป็นอย่างยิ่งว่าจะได้พบทุกท่านในโอกาสหน้า</p>
           </div>
-          <p className="text-xl text-center text-[#071E48] font-medium mt-0">24 ธันวาคม 2024 เวลา 17:00 น</p>
           <p className="text-xl text-center text-[#071E48] font-medium mt-0">ณ คริสตจักรชลบุรี</p>
           </div>
           </motion.div>
